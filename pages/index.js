@@ -10,9 +10,10 @@ import ClipLoader from "react-spinners/ClipLoader";
 export default function Home() {
   const [images, setImage] = useState(null)
   const [visibility, setVisibility] = useState("none")
-  const [contador, setContador] = useState("block")
+  const [contador, setContador] = useState("none")
   const [loading, setLoading] = useState(false)
   const [files, setFiles] = useState(null)
+  const [textCont, setTextCont] = useState(null)
 
   const loadingHandler = (l) => {
     if (l) {
@@ -28,10 +29,14 @@ export default function Home() {
   }
 
   async function upFoto(event) {
+    var imageList = event.target.files
+    setTextCont(`1 de ${imageList.length}`)
     loadingHandler(false)
     var files = []
     var imagesb64 = []
-    for (var image of event.target.files) {
+    var c = 1
+    for (var image of imageList) {
+      setTextCont(`${c} de ${imageList.length}`)
       const imageFile = image;
       const options = {
         useWebWorker: true
@@ -44,6 +49,7 @@ export default function Home() {
       } catch (error) {
         console.log(error);
       }
+      c++
     }
     setImage(imagesb64);
     setFiles(files);
@@ -94,7 +100,7 @@ export default function Home() {
       <Form >
         <Form.File onChange={upFoto} style={{ width: "100%", margin: 20 }} id="file" name="file" multiple />
       </Form>
-      <Row><div style={{ display: contador }}>1 de 10</div></Row>
+      <Row><div style={{ display: contador }}>{textCont}</div></Row>
       <ClipLoader loading={loading} size={15} ></ClipLoader>
       <Row>
         <Col><Button style={{ display: visibility }} variant="outline-dark" onClick={downloadAll}>  Download</Button></Col>
