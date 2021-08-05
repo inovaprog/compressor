@@ -106,7 +106,7 @@ export default function Home() {
             </Head>
 
             <Form >
-                <center><Form.Label>Selecione a imagem do produto</Form.Label></center>
+                <center><Form.Label>Selecione as imagens dos produtos</Form.Label></center>
                 <Form.File onChange={upFoto} style={{ width: "100%", margin: 20 }} id="file" name="file" multiple />
             </Form>
             <Row><div style={{ display: contador }}>{textCont}</div></Row>
