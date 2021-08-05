@@ -3,11 +3,27 @@ import styles from '../styles/Home.module.css'
 import { Form, Button } from 'react-bootstrap'
 import imageCompression from 'browser-image-compression';
 import { useState } from 'react';
+import ClipLoader from "react-spinners/ClipLoader";
 
 
 export default function Home() {
   const [images, setImage] = useState(null)
+  const [visibility, setVisibility] = useState("none")
+  const [loading, setLoading] = useState(false)
+  
+  const loadingHandler = (l) => {
+    if (l) {
+        setLoading(false)
+        setVisibility("block")
+    }
+    else {
+        setLoading(true)
+        setVisibility("none")
+    }
+}
+
   async function upFoto(event) {
+    loadingHandler(false)
     var names = []
     var imagesb64 = []
     for (var image of event.target.files) {
@@ -24,6 +40,7 @@ export default function Home() {
       }
     }
     setImage(imagesb64);
+    loadingHandler(true)
   }
 
   function downloadAll() {
@@ -50,7 +67,8 @@ export default function Home() {
       <Form >
         <Form.File onChange={upFoto} style={{ width: "100%", margin: 20 }} id="file" name="file" multiple />
       </Form>
-      <Button onClick={downloadAll}>Download</Button>
+      <ClipLoader loading={loading} size={15} ></ClipLoader>
+      <Button style={{display:visibility}} onClick={downloadAll}>  Download</Button>
     </div>
   )
 }
