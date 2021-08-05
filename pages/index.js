@@ -10,6 +10,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 export default function Home() {
   const [images, setImage] = useState(null)
   const [visibility, setVisibility] = useState("none")
+  const [contador, setContador] = useState("block")
   const [loading, setLoading] = useState(false)
   const [files, setFiles] = useState(null)
 
@@ -17,10 +18,12 @@ export default function Home() {
     if (l) {
       setLoading(false)
       setVisibility("block")
+      setContador("none")
     }
     else {
       setLoading(true)
       setVisibility("none")
+      setContador("block")
     }
   }
 
@@ -91,6 +94,7 @@ export default function Home() {
       <Form >
         <Form.File onChange={upFoto} style={{ width: "100%", margin: 20 }} id="file" name="file" multiple />
       </Form>
+      <Row><div style={{ display: contador }}>1 de 10</div></Row>
       <ClipLoader loading={loading} size={15} ></ClipLoader>
       <Row>
         <Col><Button style={{ display: visibility }} variant="outline-dark" onClick={downloadAll}>  Download</Button></Col>
