@@ -119,3 +119,76 @@
     flex-direction: column;
   }
 }
+
+.fotoLateral {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  overflow: visible;
+  background-image: url('../public/images/casa.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.textTitulo {
+  overflow: visible;
+  font-family: "Inter", sans-serif;
+  color: #000000;
+  font-size: 37px;
+  letter-spacing: 0px;
+  line-height: 1.2;
+}
+
+.box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.textoDescricao{
+  width: auto; /* 482px */
+  height: auto; /* 20px */
+  overflow: visible;
+  white-space: pre;
+  font-family: "Inter", sans-serif;
+  color: #000000;
+  font-size: 17px;
+  letter-spacing: 0px;
+  line-height: 1.2;
+  margin: 10px 0 20px 0;
+}
+
+
+.barraProgresso{
+  padding: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.sucesso{
+  width: auto; /* 138px */
+  height: auto; /* 30px */
+  overflow: visible;
+  white-space: pre;
+  font-family: "Inter", sans-serif;
+  color: #000000;
+  font-size: 25px;
+  letter-spacing: 0px;
+  line-height: 1.2;
+}
+
+.select{
+  width: auto; /* 138px */
+  height: auto; /* 30px */
+  overflow: visible;
+  white-space: pre;
+  font-family: "Inter", sans-serif;
+  color: #000000;
+  font-size: 25px;
+  letter-spacing: 0px;
+  line-height: 1.2;
+}
