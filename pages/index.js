@@ -131,11 +131,10 @@ export default function Home() {
                 </Button>
                 <input type="file" style={{ width: 0 }} onChange={upFoto} ref={hiddenFileInput} id="file" name="file" multiple />
               </Col>
-              <label style={{ display: visibility }} className={styles.sucesso}>Sucesso! &#129304;</label>
+              <label style={{ display: visibility }} className={styles.sucesso}>Sucesso!&#129304;</label>
               <Col className={styles.barraProgresso}>
                 <LinearProgress variant="determinate" value={totCont} style={{ display: contador }} />
               </Col>
-              <Col></Col>
             </Row>
             <Row style={{ marginTop: 50 }}>
               <Col md={3}><Button style={{ display: visibility, backgroundColor: "#35DE95", border: 0 }} onClick={downloadAll}>  Baixar Imagens</Button></Col>
