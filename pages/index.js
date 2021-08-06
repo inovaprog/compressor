@@ -125,8 +125,8 @@ export default function Home() {
               </label>
             </Row>
             <Row>
-              <Col>
-                <Button onClick={handleClick} style={{ backgroundColor: "#00E1FF", border: 0 }}>
+              <Col >
+                <Button onClick={handleClick} style={{ backgroundColor: "#00E1FF", border: 0, whiteSpace: "nowrap" }}>
                   Escolher Arquivos
                 </Button>
                 <input type="file" style={{ width: 0 }} onChange={upFoto} ref={hiddenFileInput} id="file" name="file" multiple />
@@ -135,6 +135,7 @@ export default function Home() {
               <Col className={styles.barraProgresso}>
                 <LinearProgress variant="determinate" value={totCont} style={{ display: contador }} />
               </Col>
+              <Col></Col>
             </Row>
             <Row style={{ marginTop: 50 }}>
               <Col md={3}><Button style={{ display: visibility, backgroundColor: "#35DE95", border: 0 }} onClick={downloadAll}>  Baixar Imagens</Button></Col>
