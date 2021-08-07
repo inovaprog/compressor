@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import Head from 'next/head'
 let JSZip = require('jszip');
 import styles from '../styles/Home.module.css'
@@ -9,6 +9,7 @@ import Router from 'next/router'
 import LinearProgress from '@material-ui/core/LinearProgress'
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import { useDropzone } from 'react-dropzone';
 
 
 export default function Home() {
@@ -19,6 +20,7 @@ export default function Home() {
   const [files, setFiles] = useState(null)
   const [totCont, setTotCont] = useState(0)
   const [cont, setcont] = useState(0)
+  const [imgList, setImgList] = useState([])
 
   const loadingHandler = (l) => {
     if (l) {
@@ -33,15 +35,34 @@ export default function Home() {
     }
   }
 
-  async function upFoto(event) {
-    var imageList = event.target.files
-    loadingHandler(false)
-    var files = []
+  function DropZone() {
+    const onDrop = useCallback(async acceptedFiles => {
+      loadingHandler(false)
+      var imagesb64 = await Compress(acceptedFiles)
+      loadingHandler(true)
+    }, [])
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
+
+    return (
+      <div {...getRootProps()}>
+        <input {...getInputProps()} />
+        {
+          isDragActive ?
+            <div style={{width:400, borderStyle: 'dashed', borderRadius:10, padding:20, height:200}}><center><label className={styles.textoDescricao} style={{ whiteSpace: 'nowrap' }}> Solte suas fotos aqui ...</label></center></div> :
+            <Button style={{ backgroundColor: "#00E1FF", border: 0, whiteSpace: "nowrap" }}>
+              Escolher Arquivos
+            </Button>
+        }
+      </div>
+    )
+  }
+
+  async function Compress(imageList) {
     var imagesb64 = []
+    var files = []
     var c = 1
     for (var image of imageList) {
       setTotCont(c / imageList.length * 100)
-      console.log(totCont)
       const imageFile = image;
       const options = {
         useWebWorker: true
@@ -58,6 +79,13 @@ export default function Home() {
     }
     setImage(imagesb64);
     setFiles(files);
+    return imagesb64
+  }
+
+  async function upFoto(event) {
+    var imageList = event.target.files
+    loadingHandler(false)
+    var imagesb64 = await Compress(imageList)
     loadingHandler(true)
   }
 
@@ -142,14 +170,12 @@ export default function Home() {
               </Row>
               <Row>
                 <label className={styles.textoDescricao}>
-                  Clique no botão para escolher os arquivos
+                  Arraste e solte ou clique no botão para escolher os arquivos
                 </label>
               </Row>
               <Row>
                 <Col >
-                  <Button onClick={handleClick} onDrop={handleClick} style={{ backgroundColor: "#00E1FF", border: 0, whiteSpace: "nowrap" }}>
-                    Escolher Arquivos
-                  </Button>
+                  <DropZone />
                   <input type="file" style={{ width: 0 }} onChange={upFoto} ref={hiddenFileInput} id="file" name="file" multiple />
                 </Col>
                 <label style={{ display: visibility }} className={styles.sucesso}>Sucesso!&#129304;</label>
