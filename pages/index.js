@@ -5,8 +5,10 @@ import styles from '../styles/Home.module.css'
 import { Form, Row, Col, Container, Button } from 'react-bootstrap'
 import imageCompression from 'browser-image-compression';
 import { useState } from 'react';
-import ClipLoader from "react-spinners/ClipLoader";
+import Router from 'next/router'
 import LinearProgress from '@material-ui/core/LinearProgress'
+import ToggleButton from '@material-ui/lab/ToggleButton';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
 
 export default function Home() {
@@ -107,41 +109,61 @@ export default function Home() {
         />
       </Head>
       <Row style={{ margin: 0, padding: 0 }}>
-        <Col sm={12}>
-          <div className={styles.select}>
-          
+        <Col md={6} >
+          <Row>
+            <Col sm={12}>
+              <Container>
+                <center>
+                  <div>
+                    <ToggleButtonGroup
+                      value={'1'}
+                      exclusive
+                      aria-label="text alignment"
+                      className={styles.select}
+                    >
+                      <ToggleButton value="1" aria-label="left aligned">
+                        <label>Compressor de imagem</label>
+                      </ToggleButton>
+                      <ToggleButton value="2" onClick={() => Router.push('/fotos-loja')} aria-label="centered">
+                        <label>Crop Imagem</label>
+                      </ToggleButton>
+                    </ToggleButtonGroup>
+                  </div>
+                </center>
+              </Container>
+            </Col>
+          </Row>
+          <div className={styles.container}>
+            <Container>
+              <Row>
+                <Col md={7}>
+                  <label className={styles.textTitulo} >Adicione as Imagens que deseja comprimir</label>
+                </Col>
+              </Row>
+              <Row>
+                <label className={styles.textoDescricao}>
+                  Arraste e solte ou clique no botão para escolher os arquivos
+                </label>
+              </Row>
+              <Row>
+                <Col >
+                  <Button onClick={handleClick} style={{ backgroundColor: "#00E1FF", border: 0, whiteSpace: "nowrap" }}>
+                    Escolher Arquivos
+                  </Button>
+                  <input type="file" style={{ width: 0 }} onChange={upFoto} ref={hiddenFileInput} id="file" name="file" multiple />
+                </Col>
+                <label style={{ display: visibility }} className={styles.sucesso}>Sucesso!&#129304;</label>
+                <Col className={styles.barraProgresso}>
+                  <LinearProgress variant="determinate" value={totCont} style={{ display: contador }} />
+                </Col>
+                <Col></Col>
+              </Row>
+              <Row style={{ marginTop: 50 }}>
+                <Col md={3}><Button style={{ display: visibility, backgroundColor: "#35DE95", border: 0 }} onClick={downloadAll}>  Baixar Imagens</Button></Col>
+                <Col><Button style={{ display: visibility, backgroundColor: "#8C75FF", border: 0 }} onClick={downloadZip}>Baixar em ZIP</Button></Col>
+              </Row>
+            </Container>
           </div>
-        </Col>
-        <Col md={6} style={{ margin: 0, padding: 0 }} className={styles.box}>
-          <Container>
-            <Row>
-              <Col md={6}>
-                <label className={styles.textTitulo} >Adicione as Imagens que deseja comprimir</label>
-              </Col>
-            </Row>
-            <Row>
-              <label className={styles.textoDescricao}>
-                Arraste e solte ou clique no botão para escolher os arquivos
-              </label>
-            </Row>
-            <Row>
-              <Col >
-                <Button onClick={handleClick} style={{ backgroundColor: "#00E1FF", border: 0, whiteSpace: "nowrap" }}>
-                  Escolher Arquivos
-                </Button>
-                <input type="file" style={{ width: 0 }} onChange={upFoto} ref={hiddenFileInput} id="file" name="file" multiple />
-              </Col>
-              <label style={{ display: visibility }} className={styles.sucesso}>Sucesso!&#129304;</label>
-              <Col className={styles.barraProgresso}>
-                <LinearProgress variant="determinate" value={totCont} style={{ display: contador }} />
-              </Col>
-              <Col></Col>
-            </Row>
-            <Row style={{ marginTop: 50 }}>
-              <Col md={3}><Button style={{ display: visibility, backgroundColor: "#35DE95", border: 0 }} onClick={downloadAll}>  Baixar Imagens</Button></Col>
-              <Col><Button style={{ display: visibility, backgroundColor: "#8C75FF", border: 0 }} onClick={downloadZip}>Baixar em ZIP</Button></Col>
-            </Row>
-          </Container>
         </Col>
         <Col md={6} style={{ margin: 0, padding: 0 }}>
           <div className={styles.fotoLateral}>
