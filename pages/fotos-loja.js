@@ -146,7 +146,7 @@ export default function Home() {
                             </Row>
                             <Row>
                                 <label className={styles.textoDescricao}>
-                                    Arraste e solte ou clique no botão para escolher os arquivos
+                                    Clique no botão para escolher os arquivos
                                 </label>
                             </Row>
                             <Row>

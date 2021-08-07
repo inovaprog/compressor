@@ -142,12 +142,12 @@ export default function Home() {
               </Row>
               <Row>
                 <label className={styles.textoDescricao}>
-                  Arraste e solte ou clique no botão para escolher os arquivos
+                  Clique no botão para escolher os arquivos
                 </label>
               </Row>
               <Row>
                 <Col >
-                  <Button onClick={handleClick} style={{ backgroundColor: "#00E1FF", border: 0, whiteSpace: "nowrap" }}>
+                  <Button onClick={handleClick} onDrop={handleClick} style={{ backgroundColor: "#00E1FF", border: 0, whiteSpace: "nowrap" }}>
                     Escolher Arquivos
                   </Button>
                   <input type="file" style={{ width: 0 }} onChange={upFoto} ref={hiddenFileInput} id="file" name="file" multiple />
