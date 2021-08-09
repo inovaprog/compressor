@@ -41,8 +41,10 @@ export default class Tools {
         var c = 1
         for (var image of imageList) {
             setTotCont(c / imageList.length * 100)
-            var imgResized = await this.ResizeImage(image, options, name)
-            file.push(imgResized)
+            for (var opt of options) {
+                var imgResized = await this.ResizeImage(image, opt, name)
+                file.push(imgResized)
+            }
             c++
         }
         setFiles(files);
@@ -52,7 +54,7 @@ export default class Tools {
         const imageFile = image;
         try {
             const img = await imageCompression(imageFile, options);
-            return { image: img, name: imageFile['name'].split('.')[0] + name + options.fileType};
+            return { image: img, name: imageFile['name'].split('.')[0] + name + options.fileType };
         } catch (error) {
             console.log(error);
         }

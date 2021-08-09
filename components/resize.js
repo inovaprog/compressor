@@ -21,7 +21,7 @@ export default function Resize({ onDrop, visibility, contador, totCont, files, i
                 </Row>
                 <Row>
                     <Col >
-                        <DropZone />
+                        <DropZone onDrop={onDrop} />
                     </Col>
                     <label style={{ display: visibility }} className={styles.sucesso}>Sucesso!&#129304;</label>
                     <Col className={styles.barraProgresso}>
