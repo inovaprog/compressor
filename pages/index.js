@@ -1,127 +1,47 @@
 import React, { useCallback } from 'react';
 import Head from 'next/head'
-let JSZip = require('jszip');
 import styles from '../styles/Home.module.css'
-import { Form, Row, Col, Container, Button } from 'react-bootstrap'
-import imageCompression from 'browser-image-compression';
+import { Row, Col, Container, Button } from 'react-bootstrap'
 import { useState } from 'react';
-import Router from 'next/router'
-import LinearProgress from '@material-ui/core/LinearProgress'
-import ToggleButton from '@material-ui/lab/ToggleButton';
-import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import { useDropzone } from 'react-dropzone';
-
+import Compress from '../components/compress';
+import Tools from '../tools/tools';
+import Selector from '../components/selector';
+import Image from 'next/image'
+import Resize from '../components/resize';
 
 export default function Home() {
   const [images, setImage] = useState(null)
   const [visibility, setVisibility] = useState("none")
   const [contador, setContador] = useState("none")
-  const [loading, setLoading] = useState(false)
   const [files, setFiles] = useState(null)
   const [totCont, setTotCont] = useState(0)
-  const [cont, setcont] = useState(0)
-  const [imgList, setImgList] = useState([])
+  const [service, setService] = useState('compress')
+  const [listOptions, setListOptions] = useState([])
+  const [listNames, setListNames] = useState([])
+  const [background, setBackground] = useState('images/casa.jpg')
 
   const loadingHandler = (l) => {
     if (l) {
-      setLoading(false)
       setVisibility("block")
       setContador("none")
     }
     else {
-      setLoading(true)
       setVisibility("none")
       setContador("block")
     }
   }
 
-  function DropZone() {
-    const onDrop = useCallback(async acceptedFiles => {
-      loadingHandler(false)
-      var imagesb64 = await Compress(acceptedFiles)
-      loadingHandler(true)
-    }, [])
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
-
-    return (
-      <div {...getRootProps()}>
-        <input {...getInputProps()} />
-        {
-          isDragActive ?
-            <div style={{width:400, borderStyle: 'dashed', borderRadius:10, padding:20, height:200}}><center><label className={styles.textoDescricao} style={{ whiteSpace: 'nowrap' }}> Solte suas fotos aqui ...</label></center></div> :
-            <Button style={{ backgroundColor: "#00E1FF", border: 0, whiteSpace: "nowrap" }}>
-              Escolher Arquivos
-            </Button>
-        }
-      </div>
-    )
-  }
-
-  async function Compress(imageList) {
-    var imagesb64 = []
-    var files = []
-    var c = 1
-    for (var image of imageList) {
-      setTotCont(c / imageList.length * 100)
-      const imageFile = image;
-      const options = {
-        useWebWorker: true
-      }
-      try {
-        const compressedFile = await imageCompression(imageFile, options);
-        files.push({ image: compressedFile, name: imageFile.name })
-        var image = await imageCompression.getDataUrlFromFile(compressedFile);
-        imagesb64.push({ image: image, name: imageFile.name })
-      } catch (error) {
-        console.log(error);
-      }
-      c++
-    }
-    setImage(imagesb64);
-    setFiles(files);
-    return imagesb64
-  }
-
-  async function upFoto(event) {
-    var imageList = event.target.files
+  const onDrop = useCallback(async acceptedFiles => {
     loadingHandler(false)
-    var imagesb64 = await Compress(imageList)
+    service === 'compress'
+      ? await Tools.CompressList(acceptedFiles, setImage, setFiles, setTotCont)
+      : service === 'resize'
+        ? await Tools.ResizeList(acceptedFiles, setImage, setFiles, setTotCont, listOptions, listNames)
+        : service === 'crop'
+          ? null
+          : null
     loadingHandler(true)
-  }
-
-  function downloadAll() {
-    var link = document.createElement('a');
-    link.style.display = 'none';
-    document.body.appendChild(link);
-    for (var n of images) {
-      link.setAttribute('download', n.name);
-      link.setAttribute('href', n.image);
-      link.click();
-    }
-    document.body.removeChild(link);
-  }
-
-  function downloadZip() {
-    let zip = new JSZip()
-    for (var i of files) {
-      zip.file(i.name, i.image);
-    }
-    zip.generateAsync({ type: 'blob' }).then((blobdata) => {
-      let zipblob = new Blob([blobdata])
-      var elem = window.document.createElement("a")
-      elem.href = window.URL.createObjectURL(zipblob)
-      elem.download = 'compressed.zip'
-      elem.click()
-    })
-  }
-
-
-  const hiddenFileInput = React.useRef(null);
-
-  const handleClick = event => {
-    hiddenFileInput.current.click();
-  };
-
+  }, [])
 
   return (
     <div>
@@ -138,61 +58,20 @@ export default function Home() {
       </Head>
       <Row style={{ margin: 0, padding: 0 }}>
         <Col md={6} >
-          <Row>
-            <Col sm={12}>
-              <Container>
-                <center>
-                  <div>
-                    <ToggleButtonGroup
-                      value={'1'}
-                      exclusive
-                      aria-label="text alignment"
-                      className={styles.select}
-                    >
-                      <ToggleButton value="1" aria-label="left aligned">
-                        <label>Compressor de imagem</label>
-                      </ToggleButton>
-                      <ToggleButton value="2" onClick={() => Router.push('/fotos-loja')} aria-label="centered">
-                        <label>Crop Imagem</label>
-                      </ToggleButton>
-                    </ToggleButtonGroup>
-                  </div>
-                </center>
-              </Container>
-            </Col>
-          </Row>
-          <div className={styles.container}>
-            <Container>
-              <Row>
-                <Col md={7}>
-                  <label className={styles.textTitulo} >Adicione as Imagens que deseja comprimir</label>
-                </Col>
-              </Row>
-              <Row>
-                <label className={styles.textoDescricao}>
-                  Arraste e solte ou clique no botão para escolher os arquivos
-                </label>
-              </Row>
-              <Row>
-                <Col >
-                  <DropZone />
-                  <input type="file" style={{ width: 0 }} onChange={upFoto} ref={hiddenFileInput} id="file" name="file" multiple />
-                </Col>
-                <label style={{ display: visibility }} className={styles.sucesso}>Sucesso!&#129304;</label>
-                <Col className={styles.barraProgresso}>
-                  <LinearProgress variant="determinate" value={totCont} style={{ display: contador }} />
-                </Col>
-                <Col></Col>
-              </Row>
-              <Row style={{ marginTop: 50 }}>
-                <Col md={3}><Button style={{ display: visibility, backgroundColor: "#35DE95", border: 0 }} onClick={downloadAll}>  Baixar Imagens</Button></Col>
-                <Col><Button style={{ display: visibility, backgroundColor: "#8C75FF", border: 0 }} onClick={downloadZip}>Baixar em ZIP</Button></Col>
-              </Row>
-            </Container>
-          </div>
+          <Selector setService={setService} setBackground={setBackground} service={service}></Selector>
+          {
+            service === 'compress'
+              ? <Compress onDrop={onDrop} images={images} visibility={visibility} contador={contador} totCont={totCont} images={images} files={files} />
+              : service === 'resize'
+                ? <Resize onDrop={onDrop} images={images} visibility={visibility} contador={contador} totCont={totCont} images={images} files={files} />
+                : service === 'crop'
+                  ? null
+                  : null
+          }
         </Col>
         <Col md={6} style={{ margin: 0, padding: 0 }}>
-          <div className={styles.fotoLateral}>
+          <div className={styles.fotoLateral} >
+            <img src={background} style={{ width: "100%", height: "100%" }} />
           </div>
         </Col>
       </Row>
