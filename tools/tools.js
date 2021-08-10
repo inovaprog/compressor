@@ -54,6 +54,7 @@ export default class Tools {
     }
 
     static async CropList(imageList, options, setImage , setTotCont, setFiles) {
+        options = [{id : 1}]
         var files = []
         var imagesb64 = []
         var c = 1

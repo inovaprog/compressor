@@ -42,7 +42,6 @@ export default function Home() {
 
   async function onDrop(acceptedFiles) {
     loadingHandler(false)
-    console.log("acceptedFiles")
     await executeService(acceptedFiles)
     loadingHandler(true)
   }
