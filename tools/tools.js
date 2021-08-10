@@ -1,4 +1,5 @@
 import imageCompression from 'browser-image-compression';
+import convert from 'image-file-resize';
 import { file } from 'jszip';
 let JSZip = require('jszip');
 
@@ -22,11 +23,8 @@ export default class Tools {
 
     static async CompressImage(image) {
         const imageFile = image;
-        const options = {
-            useWebWorker: true
-        }
         try {
-            const compressedFile = await imageCompression(imageFile, options);
+            const compressedFile = await imageCompression(imageFile, { useWebWorker: true });
             var file = { image: compressedFile, name: imageFile.name }
             var image = await imageCompression.getDataUrlFromFile(compressedFile);
             var res = { image: image, name: imageFile.name }
@@ -36,30 +34,40 @@ export default class Tools {
         }
     }
 
-    static async ResizeList(imageList, setTotCont, setImage, setFiles, options, name) {
+    static async ConvertList(imageList, options, setTotCont, setFiles) {
         var files = []
         var c = 1
         for (var image of imageList) {
             setTotCont(c / imageList.length * 100)
             for (var opt of options) {
-                var imgResized = await this.ResizeImage(image, opt, name)
-                file.push(imgResized)
+                var fileDict = await this.ResizeImage(image, opt)
+                var [res, file] = await this.CompressImage(fileDict.image)
+                fileDict.image = file.image
+                files.push(fileDict)
             }
             c++
         }
         setFiles(files);
     }
 
-    static async ResizeImage(image, options, name) {
-        const imageFile = image;
-        try {
-            const img = await imageCompression(imageFile, options);
-            return { image: img, name: imageFile['name'].split('.')[0] + name + options.fileType };
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
+    static async ResizeImage(imageFile, options) {
+        if(!options.fileType){
+            options.fileType = 'png';
+        }
+        if(!options.name){
+            options.name = options.width+'x'+options.height;
+        }
+        var img = await convert({
+            file: imageFile,
+            width: options.width,
+            height: options.height,
+            type: options.fileType
+        })
+        console.log(imageFile.name)
+        var res = { image: img, name: (imageFile['name'].split('.')[0]+ '-' + options.name + '.' + options.fileType).replace('undefined', '')}
+        return res
+    }
 
     static downloadAll(images) {
         var link = document.createElement('a');
@@ -82,7 +90,7 @@ export default class Tools {
             let zipblob = new Blob([blobdata])
             var elem = window.document.createElement("a")
             elem.href = window.URL.createObjectURL(zipblob)
-            elem.download = 'compressed.zip'
+            elem.download = 'images.zip'
             elem.click()
         })
     }

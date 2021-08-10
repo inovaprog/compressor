@@ -16,8 +16,7 @@ export default function Home() {
   const [files, setFiles] = useState(null)
   const [totCont, setTotCont] = useState(0)
   const [service, setService] = useState('compress')
-  const [listOptions, setListOptions] = useState([])
-  const [listNames, setListNames] = useState([])
+  const [listOptions, setListOptions] = useState([{ id: 1, name: "medium", width: 500, height: 500, fileType: 'webp' }])
   const [background, setBackground] = useState('images/casa.jpg')
 
   const loadingHandler = (l) => {
@@ -31,17 +30,21 @@ export default function Home() {
     }
   }
 
-  const onDrop = useCallback(async acceptedFiles => {
-    loadingHandler(false)
+  async function executeService(files) {
     service === 'compress'
-      ? await Tools.CompressList(acceptedFiles, setImage, setFiles, setTotCont)
+      ? await Tools.CompressList(files, setImage, setFiles, setTotCont)
       : service === 'resize'
-        ? await Tools.ResizeList(acceptedFiles, setImage, setFiles, setTotCont, listOptions, listNames)
+        ? await Tools.ConvertList(files, listOptions, setTotCont, setFiles)
         : service === 'crop'
           ? null
           : null
+  }
+
+  async function onDrop(acceptedFiles) {
+    loadingHandler(false)
+    await executeService(acceptedFiles)
     loadingHandler(true)
-  }, [])
+  }
 
   return (
     <div>
@@ -58,12 +61,12 @@ export default function Home() {
       </Head>
       <Row style={{ margin: 0, padding: 0 }}>
         <Col md={6} >
-          <Selector setService={setService} setBackground={setBackground} service={service}></Selector>
+          <Selector setService={setService} setBackground={setBackground} service={service} loadingHandler={loadingHandler} setContador={setContador}></Selector>
           {
             service === 'compress'
               ? <Compress onDrop={onDrop} images={images} visibility={visibility} contador={contador} totCont={totCont} images={images} files={files} />
               : service === 'resize'
-                ? <Resize onDrop={onDrop} images={images} visibility={visibility} contador={contador} totCont={totCont} images={images} files={files} />
+                ? <Resize onDrop={onDrop} images={images} visibility={visibility} contador={contador} totCont={totCont} images={images} files={files} setListOptions={setListOptions} listOptions={listOptions} />
                 : service === 'crop'
                   ? null
                   : null

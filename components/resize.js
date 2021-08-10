@@ -3,22 +3,24 @@ import DropZone from '../components/dropzone';
 import LinearProgress from '@material-ui/core/LinearProgress'
 import styles from '../styles/Home.module.css'
 import Tools from '../tools/tools';
+import ListConfig from './listConfig';
 
 
-export default function Resize({ onDrop, visibility, contador, totCont, files, images }) {
+export default function Resize({ onDrop, visibility, contador, totCont, files, setListOptions, listOptions }) {
     return (
         <div className={styles.container}>
             <Container>
                 <Row>
                     <Col md={7}>
-                        <label className={styles.textTitulo} >Selecione as imagens dos produtos</label>
+                        <label className={styles.textTitulo} >Selecione as imagens que deseja redimensionar</label>
                     </Col>
                 </Row>
                 <Row>
                     <label className={styles.textoDescricao}>
-                        Arraste e solte ou clique no botão para escolher os arquivos
+                        Selecione as configurações, arraste e solte ou clique no botão para escolher os arquivos
                     </label>
                 </Row>
+                <ListConfig setListOptions={setListOptions} listOptions={listOptions}></ListConfig>
                 <Row>
                     <Col >
                         <DropZone onDrop={onDrop} />

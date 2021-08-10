@@ -4,9 +4,8 @@ import LinearProgress from '@material-ui/core/LinearProgress'
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import styles from '../styles/Home.module.css'
-import Compress from './compress';
 
-export default function Selector({setService, setBackground, service}) {
+export default function Selector({ setService, setBackground, service, loadingHandler , setContador}) {
     return (
         <div>
             <Row>
@@ -20,13 +19,13 @@ export default function Selector({setService, setBackground, service}) {
                                     aria-label="text alignment"
                                     className={styles.select}
                                 >
-                                    <ToggleButton value="compress" onClick={() => {setService("compress"); setBackground('images/casa.jpg')}} aria-label="left aligned">
+                                    <ToggleButton value="compress" onClick={() => { setService("compress"); setBackground('images/casa.jpg'); loadingHandler(false); setContador('none') }} aria-label="left aligned">
                                         <label>Comprimir imagem</label>
                                     </ToggleButton>
-                                    <ToggleButton value="resize" onClick={() =>{setService("resize"); setBackground('images/astronalta.jpg')}} aria-label="centered">
+                                    <ToggleButton value="resize" onClick={async () => { await setService("resize"); await setBackground('images/astronalta.jpg'); loadingHandler(false); setContador('none') }} aria-label="centered">
                                         <label>Redimensionar Imagem</label>
                                     </ToggleButton>
-                                    <ToggleButton value="crop" onClick={() =>{setService("crop"); setBackground('')}} aria-label="centered">
+                                    <ToggleButton value="crop" onClick={() => { setService("crop"); setBackground(''); loadingHandler(false); setContador('none') }} aria-label="centered">
                                         <label>Cortar Imagem</label>
                                     </ToggleButton>
                                 </ToggleButtonGroup>
