@@ -25,13 +25,20 @@ export default function ListConfig({ setListOptions, listOptions }) {
     }
 
     const upForm = (e) => {
+        console.log(listOptions);
         listOptions.map((f) => {
             if (f.id == parseInt(e.target.name.split('-')[1])) {
                 if ((e.target.name.split('-'))[0] == 'name' || (e.target.name.split('-'))[0] == 'fileType') {
                     f[e.target.name.split('-')[0]] = e.target.value
                 }
                 else {
-                    f[(e.target.name.split('-'))[0]] = parseInt(e.target.value)
+                    var number = parseInt(e.target.value)
+                    if (number > 0 && number < 5000) {
+                        f[(e.target.name.split('-'))[0]] = number
+                    }
+                    else {
+                        f[(e.target.name.split('-'))[0]] = 5000
+                    }
                 }
             }
         })
@@ -66,10 +73,10 @@ export default function ListConfig({ setListOptions, listOptions }) {
                                 </Form.Control>
                             </Col>
                             <Col xs={3} style={styleCol}>
-                                <Form.Control placeholder="Altura" defaultValue={option.height} name={`height-${option.id}`} ></Form.Control>
+                                <Form.Control type="number" placeholder="Altura" defaultValue={option.height} name={`height-${option.id}`} ></Form.Control>
                             </Col>
                             <Col xs={3} style={styleCol}>
-                                <Form.Control placeholder="Largura" defaultValue={option.width} name={`width-${option.id}`}></Form.Control>
+                                <Form.Control type="number" placeholder="Largura" defaultValue={option.width} name={`width-${option.id}`}></Form.Control>
                             </Col>
                             <Col xs={3} style={styleCol}>
                                 <Form.Control placeholder="Nome do arquivo" defaultValue={option.name} name={`name-${option.id}`}></Form.Control>
