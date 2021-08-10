@@ -53,7 +53,7 @@ export default function ListConfig({ setListOptions, listOptions }) {
 
                 <Form onChange={(e) => upForm(e)}>
                     {listOptions.map((option) => (
-                        <Row >
+                        <Row key={option.id} >
                             <Col xs={2} style={styleCol}>
                                 <Form.Control
                                     as="select"
