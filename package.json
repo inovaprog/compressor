@@ -13,6 +13,7 @@
     "@material-ui/lab": "^4.0.0-alpha.60",
     "bootstrap": "^4.6.0",
     "browser-image-compression": "^1.0.14",
+    "image-file-resize": "^1.0.4",
     "jszip": "^3.7.1",
     "next": "11.0.1",
     "react": "17.0.2",
