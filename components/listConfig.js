@@ -1,8 +1,26 @@
-import { Container, Row, Form, Col, Button, FloatingLabel } from "react-bootstrap";
-import { useState } from "react";
+import { Container, Row, Form, Col, Button } from "react-bootstrap";
 import { useEffect } from "react";
+import React from "react";
 
 export default function ListConfig({ setListOptions, listOptions }) {
+
+    const ImportConfig = (e) => {
+        var reader = new FileReader();
+        reader.onload = onReaderLoad;
+        reader.readAsText(e.target.files[0]);
+    }
+
+    function onReaderLoad(event){
+        console.log(event.target.result);
+        var obj = JSON.parse(event.target.result);
+        setListOptions(obj);
+    }
+
+    const hiddenFileInput = React.useRef(null);
+
+    const handleClick = event => {
+        hiddenFileInput.current.click();
+    };
 
     const addLinha = () => {
         if (listOptions.length == 0) {
@@ -91,6 +109,15 @@ export default function ListConfig({ setListOptions, listOptions }) {
                         <center>
                             <Col style={{ marginTop: 10 }}>
                                 <Button variant='outline-info' onClick={addLinha}>+ Configuração</Button>
+                            </Col>
+                            <Col style={{ marginTop: 10 }}>
+                                <Button variant='outline-success' onClick={handleClick}>Importar configuração</Button>
+                                <input
+                                    type="file"
+                                    ref={hiddenFileInput}
+                                    onChange={ImportConfig}
+                                    style={{ display: 'none' }}
+                                />
                             </Col>
                         </center>
                     </Row>
