@@ -64,9 +64,9 @@ export default function Home() {
           <Selector setService={setService} setBackground={setBackground} service={service} loadingHandler={loadingHandler} setContador={setContador}></Selector>
           {
             service === 'compress'
-              ? <Compress onDrop={onDrop} images={images} visibility={visibility} contador={contador} totCont={totCont} images={images} files={files} />
+              ? <Compress onDrop={onDrop}  visibility={visibility} contador={contador} totCont={totCont} images={images} files={files} />
               : service === 'resize'
-                ? <Resize onDrop={onDrop} images={images} visibility={visibility} contador={contador} totCont={totCont} images={images} files={files} setListOptions={setListOptions} listOptions={listOptions} />
+                ? <Resize onDrop={onDrop}  visibility={visibility} contador={contador} totCont={totCont} images={images} files={files} setListOptions={setListOptions} listOptions={listOptions} />
                 : service === 'crop'
                   ? null
                   : null
