@@ -6,7 +6,7 @@ import { useState } from 'react';
 import Compress from '../components/compress';
 import Tools from '../tools/tools';
 import Selector from '../components/selector';
-import Image from 'next/image'
+import Crop from '../components/crop';
 import Resize from '../components/resize';
 
 export default function Home() {
@@ -16,7 +16,7 @@ export default function Home() {
   const [files, setFiles] = useState(null)
   const [totCont, setTotCont] = useState(0)
   const [service, setService] = useState('compress')
-  const [listOptions, setListOptions] = useState([{ id: 1, name: "medium", width: 500, height: 500, fileType: 'webp' }])
+  const [listOptions, setListOptions] = useState([{ id: 1 }])
   const [background, setBackground] = useState('images/casa.jpg')
 
   const loadingHandler = (l) => {
@@ -36,7 +36,7 @@ export default function Home() {
       : service === 'resize'
         ? await Tools.ConvertList(files, listOptions, setTotCont, setFiles)
         : service === 'crop'
-          ? null
+          ? await Tools.CropList(files, listOptions, setImage, setTotCont, setFiles)
           : null
   }
 
@@ -60,23 +60,25 @@ export default function Home() {
         />
       </Head>
       <Row style={{ margin: 0, padding: 0 }}>
-        <Col md={6} >
+        <Col>
           <Selector setService={setService} setBackground={setBackground} service={service} loadingHandler={loadingHandler} setContador={setContador}></Selector>
           {
             service === 'compress'
-              ? <Compress onDrop={onDrop}  visibility={visibility} contador={contador} totCont={totCont} images={images} files={files} />
+              ? <Compress onDrop={onDrop} visibility={visibility} contador={contador} totCont={totCont} images={images} files={files} />
               : service === 'resize'
-                ? <Resize onDrop={onDrop}  visibility={visibility} contador={contador} totCont={totCont} images={images} files={files} setListOptions={setListOptions} listOptions={listOptions} />
+                ? <Resize onDrop={onDrop} visibility={visibility} contador={contador} totCont={totCont} images={images} files={files} setListOptions={setListOptions} listOptions={listOptions} />
                 : service === 'crop'
-                  ? null
+                  ? <Crop onDrop={onDrop} visibility={visibility} contador={contador} totCont={totCont} images={images} files={files} setListOptions={setListOptions} listOptions={listOptions}></Crop>
                   : null
           }
         </Col>
-        <Col md={6} style={{ margin: 0, padding: 0 }}>
-          <div className={styles.fotoLateral} >
-            <img src={background} style={{ width: "100%", height: "100%" }} />
-          </div>
-        </Col>
+        {service != 'crop'
+          ? (<Col md={6} style={{ margin: 0, padding: 0 }}>
+            <div className={styles.fotoLateral} >
+              <img src={background} style={{ width: "100%", height: "100%" }} />
+            </div>
+          </Col>)
+          : null}
       </Row>
     </div>
   )

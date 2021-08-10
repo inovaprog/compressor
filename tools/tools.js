@@ -36,11 +36,14 @@ export default class Tools {
 
     static async ConvertList(imageList, options, setTotCont, setFiles) {
         var files = []
+        console.log(options, imageList)
         var c = 1
         for (var image of imageList) {
             setTotCont(c / imageList.length * 100)
             for (var opt of options) {
+                console.log(image)
                 var fileDict = await this.ResizeImage(image, opt)
+                console.log(fileDict)
                 var [res, file] = await this.CompressImage(fileDict.image)
                 fileDict.image = file.image
                 files.push(fileDict)
@@ -48,6 +51,24 @@ export default class Tools {
             c++
         }
         setFiles(files);
+    }
+
+    static async CropList(imageList, options, setImage , setTotCont, setFiles) {
+        options = [{id : 1}]
+        var files = []
+        var imagesb64 = []
+        var c = 1
+        for (var image of imageList) {
+            setTotCont(c / imageList.length * 100)
+            for (var opt of options) {
+                var [res, file] = await this.CompressImage(image)
+                files.push(file)
+                imagesb64.push(res)
+            }
+            c++
+        }
+        setFiles(files);
+        setImage(imagesb64);
     }
 
 
