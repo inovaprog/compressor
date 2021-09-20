@@ -80,17 +80,17 @@ export default function Home() {
                 const wpimg530 = await imageCompression(imageFile, { useWebWorker: true, maxWidthOrHeight: 530, fileType: 'webp' });
                 const wpimg600 = await imageCompression(imageFile, { useWebWorker: true, maxWidthOrHeight: 600, fileType: 'webp' });
                 files.push({ image: img100, name: imageFile['name'].replace(".png", "") + "-1-100_small.png" });
-                files.push({ image: img190, name: imageFile['name'].replace(".png", "") + "-1-190_small_x1.png" });
+                files.push({ image: img190, name: imageFile['name'].replace(".png", "") + "-1-190_small_1x.png" });
                 files.push({ image: img250, name: imageFile['name'].replace(".png", "") + "-1-250_medium.png" });
-                files.push({ image: img350, name: imageFile['name'].replace(".png", "") + "-1-350_medium_x1.png" });
+                files.push({ image: img350, name: imageFile['name'].replace(".png", "") + "-1-350_medium_1x.png" });
                 files.push({ image: img530, name: imageFile['name'].replace(".png", "") + "-1-530_large.png" });
-                files.push({ image: img600, name: imageFile['name'].replace(".png", "") + "-1-600_large_x1.png" });
+                files.push({ image: img600, name: imageFile['name'].replace(".png", "") + "-1-600_large_1x.png" });
                 files.push({ image: wpimg100, name: imageFile['name'].replace(".png", "") + "-1-100_small.webp" });
-                files.push({ image: wpimg190, name: imageFile['name'].replace(".png", "") + "-1-190_small_x1.webp" });
+                files.push({ image: wpimg190, name: imageFile['name'].replace(".png", "") + "-1-190_small_1x.webp" });
                 files.push({ image: wpimg250, name: imageFile['name'].replace(".png", "") + "-1-250_medium.webp" });
-                files.push({ image: wpimg350, name: imageFile['name'].replace(".png", "") + "-1-350_medium_x1.webp" });
+                files.push({ image: wpimg350, name: imageFile['name'].replace(".png", "") + "-1-350_medium_1x.webp" });
                 files.push({ image: wpimg530, name: imageFile['name'].replace(".png", "") + "-1-530_large.webp" });
-                files.push({ image: wpimg600, name: imageFile['name'].replace(".png", "") + "-1-600_large_x1.webp" });
+                files.push({ image: wpimg600, name: imageFile['name'].replace(".png", "") + "-1-600_large_1x.webp" });
             } catch (error) {
                 console.log(error);
             }
